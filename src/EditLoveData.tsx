@@ -8,7 +8,7 @@ const EditLoveData = () => {
 
   useEffect(() => {
     // JSONデータを読み込む
-    fetch('/data/split-love.json')
+    fetch('./split-love.json')
       .then((response) => response.json())
       .then((jsonData) => setData(jsonData));
   }, []);
