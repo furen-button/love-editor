@@ -157,7 +157,7 @@ const EditLoveData = () => {
         ダウンロード
       </button>
 
-      <h1 style={{ marginTop: '20px' }}>恋愛データ編集</h1>
+      <h1 style={{ marginTop: '20px' }}>愛の演説編集</h1>
       <ul>
         {data.map((item, index) => (
           <li key={index}>
