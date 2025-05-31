@@ -26,38 +26,35 @@ const EditLoveData = () => {
         ctx.fillStyle = 'white';
         ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
-        const text = data.join(' '); // 文字列を結合
-        const maxWidth = canvasWidth;
-        const lineHeight = 30;
+        const text = data.length > 0 ? data.join(' ') : 'デフォルトの文字列'; // デフォルト文字列を設定
 
+        // サイズ調整
         let fontSize = 30;
+        const minFontSize = 10; // 最低フォントサイズを設定
         ctx.font = `${fontSize}px Arial`;
         ctx.fillStyle = 'black'; // 文字色を黒色に設定
 
-        // サイズ調整
-        while (ctx.measureText(text).width > canvasWidth) {
+        while (ctx.measureText(text).width > canvasWidth && fontSize > minFontSize) {
           fontSize--;
           ctx.font = `${fontSize}px Arial`;
         }
 
         // テキスト描画
-        const words = text.split(' ');
-        let line = '';
-        let y = lineHeight;
+        let x = 0;
+        let y = fontSize; // フォントサイズと改行幅を統一
 
-        for (let n = 0; n < words.length; n++) {
-          const testLine = line + words[n] + ' ';
-          const metrics = ctx.measureText(testLine);
-          const testWidth = metrics.width;
-          if (testWidth > maxWidth && n > 0) {
-            ctx.fillText(line, 0, y);
-            line = words[n] + ' ';
-            y += lineHeight;
-          } else {
-            line = testLine;
+        for (let i = 0; i < text.length; i++) {
+          const char = text[i];
+          const charWidth = ctx.measureText(char).width;
+
+          if (x + charWidth > canvasWidth) {
+            x = 0;
+            y += fontSize;
           }
+
+          ctx.fillText(char, x, y);
+          x += charWidth;
         }
-        ctx.fillText(line, 0, y);
       }
     }
   }, [data]);
