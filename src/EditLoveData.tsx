@@ -34,10 +34,29 @@ const EditLoveData = () => {
         ctx.font = `${fontSize}px Arial`;
         ctx.fillStyle = 'black'; // 文字色を黒色に設定
 
-        while (ctx.measureText(text).width > canvasWidth && fontSize > minFontSize) {
-          fontSize--;
-          ctx.font = `${fontSize}px Arial`;
-        }
+        // フォントサイズを計算で求める
+        const calculateFontSize = () => {
+          let testFontSize = fontSize;
+          ctx.font = `${testFontSize}px Arial`;
+          const textNum = text.length;
+          while (testFontSize > minFontSize) {
+            const characterSize = ctx.measureText('あ'); // 日本語の文字を使用してフォントサイズを測定
+            const textWidth = characterSize.width;
+            const textHeight = testFontSize;
+            const characterPerOneLine = Math.ceil(canvasWidth / textWidth);
+            const lines = Math.ceil(textNum / characterPerOneLine);
+            console.log(`Testing font size: ${testFontSize}, characterPerOneLine: ${characterPerOneLine}, lines: ${lines}`);
+            if (lines * textHeight <= canvasHeight) {
+              break; // フォントサイズが適切な場合はループを抜ける
+            }
+            testFontSize -= 1; // フォントサイズを小さくする
+            ctx.font = `${testFontSize}px Arial`;
+          }
+          return testFontSize;
+        };
+
+        fontSize = calculateFontSize();
+        ctx.font = `${fontSize}px Arial`;
 
         // テキスト描画
         let x = 0;
@@ -100,6 +119,14 @@ const EditLoveData = () => {
               disabled={index === data.length - 1}
             >
               ↓
+            </button>
+            <button
+              onClick={() => {
+                const newData = data.filter((_, i) => i !== index);
+                setData(newData);
+              }}
+            >
+              削除
             </button>
           </li>
         ))}
