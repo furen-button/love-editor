@@ -1,0 +1,44 @@
+.edit-love-data {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  width: 100%;
+  max-width: 1200px; /* コンテナの最大幅を設定 */
+  margin: 0 auto; /* コンテナを中央揃え */
+}
+
+.edit-love-data h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.edit-love-data ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.edit-love-data li {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.edit-love-data input {
+  flex: 1;
+  margin-right: 10px;
+  padding: 5px;
+  font-size: 16px;
+  width: 100%;
+  max-width: 1000px; /* 入力フィールドの最大幅を設定 */
+}
+
+.edit-love-data button {
+  margin-left: 5px;
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.edit-love-data button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
