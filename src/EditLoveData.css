@@ -1,4 +1,9 @@
+/* EditLoveData.css */
+
 .edit-love-data {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   font-family: Arial, sans-serif;
   padding: 20px;
   width: 100%;
@@ -9,17 +14,26 @@
 .edit-love-data h1 {
   font-size: 24px;
   margin-bottom: 20px;
+  text-align: center;
+}
+
+.edit-love-data canvas {
+  margin-bottom: 20px;
+  border: 1px solid black;
 }
 
 .edit-love-data ul {
   list-style-type: none;
   padding: 0;
+  width: 100%;
+  max-width: 800px;
 }
 
 .edit-love-data li {
   margin-bottom: 10px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 .edit-love-data input {
@@ -29,6 +43,14 @@
   font-size: 16px;
   width: 100%;
   max-width: 1000px; /* 入力フィールドの最大幅を設定 */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s;
+}
+
+.edit-love-data input:focus {
+  border-color: #007BFF;
+  outline: none;
 }
 
 .edit-love-data button {
@@ -36,9 +58,19 @@
   padding: 5px 10px;
   font-size: 14px;
   cursor: pointer;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.edit-love-data button:hover {
+  background-color: #0056b3;
 }
 
 .edit-love-data button:disabled {
   cursor: not-allowed;
   opacity: 0.5;
+  background-color: #ccc;
 }
