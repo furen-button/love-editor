@@ -30,7 +30,7 @@ const EditLoveData = () => {
 
         // サイズ調整
         let fontSize = 30;
-        const minFontSize = 10; // 最低フォントサイズを設定
+        const minFontSize = 8; // 最低フォントサイズを設定
         ctx.font = `${fontSize}px Arial`;
         ctx.fillStyle = 'black'; // 文字色を黒色に設定
 
