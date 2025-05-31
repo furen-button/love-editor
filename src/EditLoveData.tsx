@@ -142,6 +142,21 @@ const EditLoveData = () => {
         ))}
       </select>
       <canvas ref={canvasRef} style={{ border: '1px solid black', marginBottom: '20px', alignSelf: 'center' }}></canvas>
+      <button
+        onClick={() => {
+          const canvas = canvasRef.current;
+          if (canvas) {
+            const link = document.createElement('a');
+            link.download = `love-message-${new Date().toISOString().slice(0, 10)}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+          }
+        }}
+        style={{ marginTop: '10px' }}
+      >
+        ダウンロード
+      </button>
+
       <h1 style={{ marginTop: '20px' }}>恋愛データ編集</h1>
       <ul>
         {data.map((item, index) => (
