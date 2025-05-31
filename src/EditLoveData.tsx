@@ -3,6 +3,7 @@ import './EditLoveData.css';
 
 const EditLoveData = () => {
   const [data, setData] = useState<string[]>([]);
+  const [selectedFont, setSelectedFont] = useState('Arial');
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -17,19 +18,6 @@ const EditLoveData = () => {
     if (canvas) {
       const ctx = canvas.getContext('2d');
       if (ctx) {
-        // メモ化された文字幅を保持
-        const memoizedCharacterWidth = (() => {
-          const cache = new Map<number, number>();
-          return (fontSize: number) => {
-            if (!cache.has(fontSize)) {
-              ctx.font = `${fontSize}px Arial`;
-              const width = ctx.measureText('あ').width;
-              cache.set(fontSize, width);
-            }
-            return cache.get(fontSize) as number;
-          };
-        })();
-
         const canvasWidth = 800;
         const canvasHeight = 418;
         canvas.width = canvasWidth;
@@ -43,15 +31,27 @@ const EditLoveData = () => {
         // サイズ調整
         let fontSize = 75;
         const minFontSize = 8; // 最低フォントサイズを設定
-        ctx.font = `${fontSize}px Arial`;
+        ctx.font = `${fontSize}px ${selectedFont}`;
         ctx.fillStyle = 'black'; // 文字色を黒色に設定
 
         // フォントサイズを計算で求める
         const calculateFontSize = () => {
           let testFontSize = fontSize;
-          ctx.font = `${testFontSize}px Arial`;
+          ctx.font = `${testFontSize}px ${selectedFont}`;
           const textNum = text.length;
 
+          // メモ化された文字幅を保持
+          const memoizedCharacterWidth = (() => {
+            const cache = new Map<number, number>();
+            return (fontSize: number) => {
+              if (!cache.has(fontSize)) {
+                ctx.font = `${fontSize}px ${selectedFont}`;
+                const width = ctx.measureText('あ').width;
+                cache.set(fontSize, width);
+              }
+              return cache.get(fontSize) as number;
+            };
+          })();
 
           while (testFontSize > minFontSize) {
             const textWidth = memoizedCharacterWidth(testFontSize);
@@ -71,7 +71,7 @@ const EditLoveData = () => {
         };
 
         fontSize = calculateFontSize();
-        ctx.font = `${fontSize}px Arial`;
+        ctx.font = `${fontSize}px ${selectedFont}`;
 
         // テキスト描画
         let x = 0;
@@ -91,7 +91,7 @@ const EditLoveData = () => {
         }
       }
     }
-  }, [data]);
+  }, [data, selectedFont]);
 
   const handleEdit = (index: number, value: string) => {
     const newData = [...data];
@@ -111,8 +111,20 @@ const EditLoveData = () => {
     console.log('保存されたデータ:', data);
   };
 
+  // フォント選択 UI
   return (
     <div className="edit-love-data" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <select
+        value={selectedFont}
+        onChange={(e) => setSelectedFont(e.target.value)}
+        style={{ marginBottom: '20px' }}
+      >
+        {['Arial', 'Noto Sans JP', 'Zen Maru Gothic', 'Zen Kaku Gothic'].map((font) => (
+          <option key={font} value={font}>
+            {font}
+          </option>
+        ))}
+      </select>
       <canvas ref={canvasRef} style={{ border: '1px solid black', marginBottom: '20px', alignSelf: 'center' }}></canvas>
       <h1 style={{ marginTop: '20px' }}>恋愛データ編集</h1>
       <ul>
