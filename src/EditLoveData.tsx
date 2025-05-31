@@ -17,6 +17,19 @@ const EditLoveData = () => {
     if (canvas) {
       const ctx = canvas.getContext('2d');
       if (ctx) {
+        // メモ化された文字幅を保持
+        const memoizedCharacterWidth = (() => {
+          const cache = new Map<number, number>();
+          return (fontSize: number) => {
+            if (!cache.has(fontSize)) {
+              ctx.font = `${fontSize}px Arial`;
+              const width = ctx.measureText('あ').width;
+              cache.set(fontSize, width);
+            }
+            return cache.get(fontSize) as number;
+          };
+        })();
+
         const canvasWidth = 800;
         const canvasHeight = 418;
         canvas.width = canvasWidth;
@@ -26,10 +39,9 @@ const EditLoveData = () => {
         ctx.fillStyle = 'white';
         ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
-        const text = data.length > 0 ? data.join(' ') : 'デフォルトの文字列'; // デフォルト文字列を設定
-
+        const text = data.join(' ');
         // サイズ調整
-        let fontSize = 30;
+        let fontSize = 75;
         const minFontSize = 8; // 最低フォントサイズを設定
         ctx.font = `${fontSize}px Arial`;
         ctx.fillStyle = 'black'; // 文字色を黒色に設定
@@ -39,19 +51,22 @@ const EditLoveData = () => {
           let testFontSize = fontSize;
           ctx.font = `${testFontSize}px Arial`;
           const textNum = text.length;
+
+
           while (testFontSize > minFontSize) {
-            const characterSize = ctx.measureText('あ'); // 日本語の文字を使用してフォントサイズを測定
-            const textWidth = characterSize.width;
+            const textWidth = memoizedCharacterWidth(testFontSize);
             const textHeight = testFontSize;
             const characterPerOneLine = Math.ceil(canvasWidth / textWidth);
+
+            // 必要な行数を計算
             const lines = Math.ceil(textNum / characterPerOneLine);
-            console.log(`Testing font size: ${testFontSize}, characterPerOneLine: ${characterPerOneLine}, lines: ${lines}`);
+
             if (lines * textHeight <= canvasHeight) {
               break; // フォントサイズが適切な場合はループを抜ける
             }
             testFontSize -= 1; // フォントサイズを小さくする
-            ctx.font = `${testFontSize}px Arial`;
           }
+
           return testFontSize;
         };
 
