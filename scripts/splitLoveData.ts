@@ -12,7 +12,7 @@ const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
 // Define the input and output file paths
 const inputFilePath = path.join(__dirname, '../data/original-love.txt');
-const outputFilePath = path.join(__dirname, '../data/split-love.json');
+const outputFilePath = path.join(__dirname, '../public/split-love.json');
 
 // Read the original text file
 fs.readFile(inputFilePath, 'utf8', (err: Error | null, data: string) => {
