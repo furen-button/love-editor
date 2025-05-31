@@ -2,16 +2,27 @@ import { useState, useEffect, useRef } from 'react';
 import './EditLoveData.css';
 
 const EditLoveData = () => {
-  const [data, setData] = useState<string[]>([]);
+  const savedData = localStorage.getItem('loveData');
+  const initialData = savedData ? JSON.parse(savedData) : [];
+  const [data, setData] = useState<string[]>(initialData);
   const [selectedFont, setSelectedFont] = useState('Arial');
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
+  const fetchAndSetData = async () => {
+    const response = await fetch('./split-love.json');
+    const jsonData = await response.json();
+    setData(jsonData);
+  };
+
   useEffect(() => {
-    // JSONデータを読み込む
-    fetch('./split-love.json')
-      .then((response) => response.json())
-      .then((jsonData) => setData(jsonData));
+    if (data.length === 0) {
+      fetchAndSetData();
+    }
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem('loveData', JSON.stringify(data));
+  }, [data]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -128,6 +139,10 @@ const EditLoveData = () => {
   };
 
   // フォント選択 UI
+  const resetData = () => {
+    fetchAndSetData();
+  };
+
   return (
     <div className="edit-love-data" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <select
@@ -212,6 +227,7 @@ const EditLoveData = () => {
         >
           JSON配列化
         </button>
+        <button onClick={resetData}>リセット</button>
       </div>
     </div>
   );
