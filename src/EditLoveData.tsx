@@ -238,7 +238,6 @@ const EditLoveData = () => {
       >
         ダウンロード
       </button>
-
       <h1 style={{ marginTop: '20px' }}>"愛の演説"編集</h1>
       <ul>
         {data.map((item, index) => (
@@ -271,6 +270,15 @@ const EditLoveData = () => {
           </li>
         ))}
       </ul>
+      <button
+        onClick={() => {
+          const newData = [...data, '大好きだし'];
+          setData(newData);
+        }}
+        style={{ marginTop: '10px', padding: '10px', backgroundColor: '#007BFF', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
+      >
+        新しい愛を追加
+      </button>
       <h1>"愛の演説"テキストコピー</h1>
       <textarea
         value={data.join(' ')}
