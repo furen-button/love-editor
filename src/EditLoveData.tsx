@@ -3,6 +3,7 @@ import './EditLoveData.css';
 import { showToast } from './utils/showToast';
 
 const EditLoveData = () => {
+  const [isUsageVisible, setIsUsageVisible] = useState(false);
   const savedData = localStorage.getItem('loveData');
   const initialData = savedData ? JSON.parse(savedData) : [];
   const [data, setData] = useState<string[]>(initialData);
@@ -134,20 +135,25 @@ const EditLoveData = () => {
         あらゆる大好きを詰め込んだ愛の演説を作成しましょう！<br />
         参考: <a href="https://dic.pixiv.net/a/%E6%81%8B%E5%A4%AA%E9%83%8E%E6%B5%81%E6%84%9B%E3%81%AE%E5%91%8A%E7%99%BD" target="_blank">恋太郎流愛の告白 (おもすぎるあいのげんごか)とは【ピクシブ百科事典】</a>
       </div>
-      <h2 style={{ marginTop: '20px' }}>使い方</h2>
-      <div>
-        <p>愛の演説は、以下のように編集できます。</p>
-        <ul>
-          <li>テキストを直接編集</li>
-          <li>上下ボタンで順番を変更</li>
-          <li>削除ボタンで項目を削除</li>
-        </ul>
-        <p>フォントやフォントサイズ、画像の高さを調整できます。ダウンロードボタンをクリックして画像を保存できます。</p>
-        <p>テキストをコピーするボタンも用意しています。</p>
-        <p>ページをリロードすると編集内容は復元されます。</p>
-        <p>愛の演説を作成してあなたの愛を表現しましょう！</p>
-        <p>※原文を参照させていただいていますが、自分の愛の演説を作成するためのエディターです。原文の内容をそのまま使用すること避けてください。</p>
-      </div>
+      <h2 style={{ marginTop: '20px', cursor: 'pointer' }} onClick={() => setIsUsageVisible(!isUsageVisible)}>
+        使い方 {isUsageVisible ? '▲' : '▼'}
+      </h2>
+      {isUsageVisible && (
+        <div>
+          <p>愛の演説は、以下のように編集できます。</p>
+          <ul>
+            <li>テキストを直接編集</li>
+            <li>上下ボタンで順番を変更</li>
+            <li>削除ボタンで項目を削除</li>
+          </ul>
+          <p>フォントやフォントサイズ、画像の高さを調整できます。ダウンロードボタンをクリックして画像を保存できます。</p>
+          <p>テキストをコピーするボタンも用意しています。</p>
+          <p>ページをリロードすると編集内容は復元されます。</p>
+          <p>愛の演説を作成してあなたの愛を表現しましょう！</p>
+          <p>※原文を参照させていただいていますが、自分の愛の演説を作成するためのエディターです。原文の内容をそのまま使用すること避けてください。</p>
+        </div>
+      )}
+      <canvas ref={canvasRef} style={{ border: '1px solid black', marginBottom: '20px', alignSelf: 'center' }}></canvas>
       <select
         value={selectedFont}
         onChange={(e) => setSelectedFont(e.target.value)}
@@ -159,7 +165,6 @@ const EditLoveData = () => {
           </option>
         ))}
       </select>
-      <canvas ref={canvasRef} style={{ border: '1px solid black', marginBottom: '20px', alignSelf: 'center' }}></canvas>
       <input
         type="number"
         value={manualFontSize || ''}
