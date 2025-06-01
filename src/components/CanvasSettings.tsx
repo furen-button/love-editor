@@ -40,13 +40,14 @@ const CanvasSettings: React.FC<CanvasSettingsProps> = ({
   const [showHelp, setShowHelp] = useState(false);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '20px' }}>
-      <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-        <label style={{ flex: '1', textAlign: 'right', marginRight: '5px' }}>フォント:</label>
+    <div style={{ padding: '20px', backgroundColor: '#f0f0f0', borderRadius: '10px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', marginBottom: '20px' }}>
+      <h2 style={{ textAlign: 'center', marginBottom: '20px', color: '#333' }}>キャンバス設定</h2>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '10px', alignItems: 'center' }}>
+        <label style={{ textAlign: 'right', color: '#555' }}>フォント:</label>
         <select
           value={selectedFont}
           onChange={(e) => setSelectedFont(e.target.value)}
-          style={{ flex: '2', padding: '5px' }}
+          style={{ padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
         >
           {['Arial', 'Noto Sans JP', 'Zen Maru Gothic', 'Zen Kaku Gothic', 'Kosugi Maru', 'Yusei Magic'].map((font) => (
             <option key={font} value={font}>
@@ -54,51 +55,54 @@ const CanvasSettings: React.FC<CanvasSettingsProps> = ({
             </option>
           ))}
         </select>
-        <label style={{ flex: '1', textAlign: 'right', marginRight: '5px' }}>フォントサイズ:</label>
+
+        <label style={{ textAlign: 'right', color: '#555' }}>フォントサイズ:</label>
         <input
           type="number"
           value={manualFontSize || ''}
           onChange={(e) => setManualFontSize(Number(e.target.value) || null)}
           placeholder="フォントサイズ"
-          style={{ flex: '2', padding: '5px' }}
+          style={{ paddingTop: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
         />
-      </div>
-      <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-        <label style={{ flex: '1', textAlign: 'right', marginRight: '5px' }}>画像サイズ:</label>
+
+        <label style={{ textAlign: 'right', color: '#555' }}>画像幅:</label>
         <input
           type="number"
           value={manualCanvasWidth || ''}
           onChange={(e) => setManualCanvasWidth(Number(e.target.value) || null)}
           placeholder="幅"
-          style={{ flex: '2', padding: '5px' }}
+          style={{ paddingTop: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
         />
-        <p>×</p>
+
+        <label style={{ textAlign: 'right', color: '#555' }}>画像高さ:</label>
         <input
           type="number"
           value={manualCanvasHeight || ''}
           onChange={(e) => setManualCanvasHeight(Number(e.target.value) || null)}
           placeholder="高さ"
-          style={{ flex: '2', padding: '5px' }}
+          style={{ paddingTop: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
         />
-        <button
-          onClick={() => setShowHelp(!showHelp)}
-          style={{ padding: '5px', backgroundColor: '#007BFF', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
-        >
-          よく使われる画像サイズ
-        </button>
       </div>
+
+      <button
+        onClick={() => setShowHelp(!showHelp)}
+        style={{ marginTop: '20px', padding: '10px', backgroundColor: '#007BFF', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer', width: '100%' }}
+      >
+        よく使われる画像サイズ
+      </button>
+
       {showHelp && (
-        <div style={{ backgroundColor: '#f9f9f9', padding: '10px', borderRadius: '5px', boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)' }}>
-          <p>よく使われる画像サイズ:</p>
-          <ul>
+        <div style={{ marginTop: '20px', backgroundColor: '#fff', padding: '10px', borderRadius: '5px', boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)' }}>
+          <p style={{ marginBottom: '10px', color: '#333' }}>よく使われる画像サイズ:</p>
+          <ul style={{ listStyle: 'none', padding: '0', margin: '0' }}>
             {commonSizes.map((size, index) => (
-              <li key={index}>
+              <li key={index} style={{ marginBottom: '10px' }}>
                 <button
                   onClick={() => {
                     setManualCanvasWidth(size.width);
                     setManualCanvasHeight(size.height);
                   }}
-                  style={{ padding: '5px', backgroundColor: '#007BFF', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer', marginBottom: '5px' }}
+                  style={{ padding: '10px', backgroundColor: '#007BFF', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer', width: '100%' }}
                 >
                   {size.label} - {size.width} × {size.height}
                 </button>
