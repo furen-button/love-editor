@@ -43,6 +43,7 @@ const UsageInstructions: React.FC<UsageInstructionsProps> = ({
             <li>テキストを直接編集</li>
             <li>上下ボタンで順番を変更</li>
             <li>削除ボタンで項目を削除</li>
+            <li>新しい項目を追加</li>
           </ul>
           <p style={{ marginBottom: '10px' }}>
             フォントやフォントサイズ、画像の高さを調整できます。ダウンロードボタンをクリックして画像を保存できます。

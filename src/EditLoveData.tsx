@@ -149,9 +149,10 @@ const EditLoveData = () => {
         marginBottom: '20px',
         textAlign: 'center',
       }}>
-        『君のことが大大大大大好きな100人の彼女』の"愛の演説"の編集をするエディターです。<br />
-        あらゆる大好きを詰め込んだ愛の演説を作成しましょう！<br />
-        参考: <a href="https://dic.pixiv.net/a/%E6%81%8B%E5%A4%AA%E9%83%8E%E6%B5%81%E6%84%9B%E3%81%AE%E5%91%8A%E7%99%BD" target="_blank" style={{ color: '#007BFF', textDecoration: 'none' }}>恋太郎流愛の告白 (おもすぎるあいのげんごか)とは【ピクシブ百科事典】</a>
+        『君のことが大大大大大好きな100人の彼女』の"愛の演説"を編集するエディターです。<br />
+        あらゆる大好きを詰め込んだ"愛の演説"を作成しよう！<br />
+        参考1: <a href="https://hyakkano.com/" target="_blank" style={{ color: '#007BFF', textDecoration: 'none' }}>TVアニメ「君のことが大大大大大好きな100人の彼女」公式サイト</a><br />
+        参考2: <a href="https://dic.pixiv.net/a/%E6%81%8B%E5%A4%AA%E9%83%8E%E6%B5%81%E6%84%9B%E3%81%AE%E5%91%8A%E7%99%BD" target="_blank" style={{ color: '#007BFF', textDecoration: 'none' }}>恋太郎流愛の告白 (おもすぎるあいのげんごか)とは【ピクシブ百科事典】</a>
       </div>
       <UsageInstructions
         isUsageVisible={isUsageVisible}
