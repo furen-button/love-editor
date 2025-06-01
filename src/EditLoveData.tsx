@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import './EditLoveData.css';
 import { showToast } from './utils/showToast';
+import CanvasSettings from './components/CanvasSettings';
+import UsageInstructions from './components/UsageInstructions';
 
 const EditLoveData = () => {
   const [isUsageVisible, setIsUsageVisible] = useState(false);
@@ -57,14 +59,15 @@ const EditLoveData = () => {
             const textNum = text.length;
 
             const memoizedCharacterWidth = (() => {
-              const cache = new Map<number, number>();
+              const cache = new Map<string, number>();
               return (fontSize: number) => {
-                if (!cache.has(fontSize)) {
+                const cacheKey = `${fontSize}-${selectedFont}`;
+                if (!cache.has(cacheKey)) {
                   ctx.font = `${fontSize}px ${selectedFont}`;
                   const width = ctx.measureText('あ').width;
-                  cache.set(fontSize, width);
+                  cache.set(cacheKey, width);
                 }
-                return cache.get(fontSize) as number;
+                return cache.get(cacheKey) || 0;
               };
             })();
 
@@ -150,94 +153,24 @@ const EditLoveData = () => {
         あらゆる大好きを詰め込んだ愛の演説を作成しましょう！<br />
         参考: <a href="https://dic.pixiv.net/a/%E6%81%8B%E5%A4%AA%E9%83%8E%E6%B5%81%E6%84%9B%E3%81%AE%E5%91%8A%E7%99%BD" target="_blank" style={{ color: '#007BFF', textDecoration: 'none' }}>恋太郎流愛の告白 (おもすぎるあいのげんごか)とは【ピクシブ百科事典】</a>
       </div>
-      <h2
-        style={{
-          marginTop: '20px',
-          cursor: 'pointer',
-          backgroundColor: '#007BFF',
-          color: '#fff',
-          padding: '10px',
-          borderRadius: '5px',
-          textAlign: 'center',
-          boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
-        }}
-        onClick={() => setIsUsageVisible(!isUsageVisible)}
-      >
-        使い方 {isUsageVisible ? '▲' : '▼'}
-      </h2>
-      {isUsageVisible && (
-        <div style={{
-          backgroundColor: '#f9f9f9',
-          padding: '20px',
-          borderRadius: '10px',
-          boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
-          marginTop: '10px',
-        }}>
-          <p style={{ marginBottom: '10px' }}>
-            "愛の演説"は、以下のように編集できます。
-          </p>
-          <ul style={{ paddingLeft: '20px', marginBottom: '10px' }}>
-            <li>テキストを直接編集</li>
-            <li>上下ボタンで順番を変更</li>
-            <li>削除ボタンで項目を削除</li>
-          </ul>
-          <p style={{ marginBottom: '10px' }}>
-            フォントやフォントサイズ、画像の高さを調整できます。ダウンロードボタンをクリックして画像を保存できます。
-          </p>
-          <p style={{ marginBottom: '10px' }}>
-            テキストをコピーするボタンも用意しています。
-          </p>
-          <p style={{ marginBottom: '10px' }}>
-            ページをリロードすると編集内容は復元されます。
-          </p>
-          <p style={{ marginBottom: '10px' }}>
-            オリジナルの"愛の演説"を作成してあなたの愛を表現しましょう！
-          </p>
-          <p>
-            ※原文を参照させていただいていますが、オリジナルの"愛の演説"を作成するためのエディターです。原文の内容をそのまま使用すること避けてください。
-          </p>
-        </div>
-      )}
-      <h1 style={{ marginTop: '20px' }}>"愛の演説"画像</h1>
+      <UsageInstructions
+        isUsageVisible={isUsageVisible}
+        toggleUsageVisibility={() => setIsUsageVisible(!isUsageVisible)}
+      />
+      <h1 style={{ marginTop: '20px' }}>
+        "愛の演説"画像
+      </h1>
       <canvas ref={canvasRef} style={{ border: '1px solid black', marginBottom: '20px', alignSelf: 'center' }}></canvas>
-      <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', alignItems: 'center' }}>
-        <label style={{ flex: '1', textAlign: 'right', marginRight: '5px' }}>フォント:</label>
-        <select
-          value={selectedFont}
-          onChange={(e) => setSelectedFont(e.target.value)}
-          style={{ flex: '2', padding: '5px' }}
-        >
-          {['Arial', 'Noto Sans JP', 'Zen Maru Gothic', 'Zen Kaku Gothic'].map((font) => (
-            <option key={font} value={font}>
-              {font}
-            </option>
-          ))}
-        </select>
-        <label style={{ flex: '1', textAlign: 'right', marginRight: '5px' }}>フォントサイズ:</label>
-        <input
-          type="number"
-          value={manualFontSize || ''}
-          onChange={(e) => setManualFontSize(Number(e.target.value) || null)}
-          placeholder="フォントサイズ"
-          style={{ flex: '2', padding: '5px' }}
-        />
-        <label style={{ flex: '1', textAlign: 'right', marginRight: '5px' }}>画像サイズ:</label>
-        <input
-          type="number"
-          value={manualCanvasWidth || ''}
-          onChange={(e) => setManualCanvasWidth(Number(e.target.value) || null)}
-          placeholder="幅"
-          style={{ flex: '2', padding: '5px' }}
-        />
-        <p>×</p>
-        <input
-          type="number"
-          value={manualCanvasHeight || ''}
-          onChange={(e) => setManualCanvasHeight(Number(e.target.value) || null)}
-          placeholder="高さ"
-          style={{ flex: '2', padding: '5px' }}
-        />
-      </div>
+      <CanvasSettings
+        selectedFont={selectedFont}
+        setSelectedFont={setSelectedFont}
+        manualFontSize={manualFontSize}
+        setManualFontSize={setManualFontSize}
+        manualCanvasWidth={manualCanvasWidth}
+        setManualCanvasWidth={setManualCanvasWidth}
+        manualCanvasHeight={manualCanvasHeight}
+        setManualCanvasHeight={setManualCanvasHeight}
+      />
       <button
         onClick={() => {
           const canvas = canvasRef.current;
