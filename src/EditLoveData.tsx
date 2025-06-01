@@ -31,7 +31,7 @@ const EditLoveData = () => {
     localStorage.setItem('loveData', JSON.stringify(data));
   }, [data]);
 
-  useEffect(() => {
+  const updateCanvas = () => {
     const canvas = canvasRef.current;
     if (canvas) {
       const ctx = canvas.getContext('2d');
@@ -46,11 +46,10 @@ const EditLoveData = () => {
         ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
         const text = data.join(' ');
-        // サイズ調整
         let fontSize = manualFontSize || 75;
-        const minFontSize = 8; // 最低フォントサイズを設定
+        const minFontSize = 8;
         ctx.font = `${fontSize}px ${selectedFont}`;
-        ctx.fillStyle = 'black'; // 文字色を黒色に設定
+        ctx.fillStyle = 'black';
 
         if (!manualFontSize) {
           const calculateFontSize = () => {
@@ -76,13 +75,12 @@ const EditLoveData = () => {
               const textHeight = testFontSize;
               const characterPerOneLine = Math.ceil(canvasWidth / textWidth);
 
-              // 必要な行数を計算
               const lines = Math.ceil(textNum / characterPerOneLine);
 
               if (lines * textHeight <= canvasHeight) {
-                break; // フォントサイズが適切な場合はループを抜ける
+                break;
               }
-              testFontSize -= 1; // フォントサイズを小さくする
+              testFontSize -= 1;
             }
 
             return testFontSize;
@@ -93,9 +91,8 @@ const EditLoveData = () => {
 
         ctx.font = `${fontSize}px ${selectedFont}`;
 
-        // テキスト描画
         let x = 0;
-        let y = fontSize; // フォントサイズと改行幅を統一
+        let y = fontSize;
 
         for (let i = 0; i < text.length; i++) {
           const char = text[i];
@@ -111,6 +108,11 @@ const EditLoveData = () => {
         }
       }
     }
+  };
+
+  useEffect(() => {
+    updateCanvas();
+    document.fonts.ready.then(updateCanvas);
   }, [data, selectedFont, manualFontSize, manualCanvasWidth, manualCanvasHeight]);
 
   const handleEdit = (index: number, value: string) => {

@@ -48,7 +48,7 @@ const CanvasSettings: React.FC<CanvasSettingsProps> = ({
           onChange={(e) => setSelectedFont(e.target.value)}
           style={{ flex: '2', padding: '5px' }}
         >
-          {['Arial', 'Noto Sans JP', 'Zen Maru Gothic', 'Zen Kaku Gothic'].map((font) => (
+          {['Arial', 'Noto Sans JP', 'Zen Maru Gothic', 'Zen Kaku Gothic', 'Kosugi Maru', 'Yusei Magic'].map((font) => (
             <option key={font} value={font}>
               {font}
             </option>
