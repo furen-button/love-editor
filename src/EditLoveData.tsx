@@ -129,30 +129,75 @@ const EditLoveData = () => {
 
   return (
     <div className="edit-love-data" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <h1>"愛の演説"エディター</h1>
-      <div>
+      <h1 style={{
+        fontSize: '2rem',
+        color: '#333',
+        marginBottom: '20px',
+        textAlign: 'center',
+      }}>
+        "愛の演説"エディター
+      </h1>
+      <div style={{
+        backgroundColor: '#f9f9f9',
+        padding: '20px',
+        borderRadius: '10px',
+        boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
+        marginBottom: '20px',
+        textAlign: 'center',
+      }}>
         『君のことが大大大大大好きな100人の彼女』の"愛の演説"の編集をするエディターです。<br />
         あらゆる大好きを詰め込んだ愛の演説を作成しましょう！<br />
-        参考: <a href="https://dic.pixiv.net/a/%E6%81%8B%E5%A4%AA%E9%83%8E%E6%B5%81%E6%84%9B%E3%81%AE%E5%91%8A%E7%99%BD" target="_blank">恋太郎流愛の告白 (おもすぎるあいのげんごか)とは【ピクシブ百科事典】</a>
+        参考: <a href="https://dic.pixiv.net/a/%E6%81%8B%E5%A4%AA%E9%83%8E%E6%B5%81%E6%84%9B%E3%81%AE%E5%91%8A%E7%99%BD" target="_blank" style={{ color: '#007BFF', textDecoration: 'none' }}>恋太郎流愛の告白 (おもすぎるあいのげんごか)とは【ピクシブ百科事典】</a>
       </div>
-      <h2 style={{ marginTop: '20px', cursor: 'pointer' }} onClick={() => setIsUsageVisible(!isUsageVisible)}>
+      <h2
+        style={{
+          marginTop: '20px',
+          cursor: 'pointer',
+          backgroundColor: '#007BFF',
+          color: '#fff',
+          padding: '10px',
+          borderRadius: '5px',
+          textAlign: 'center',
+          boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
+        }}
+        onClick={() => setIsUsageVisible(!isUsageVisible)}
+      >
         使い方 {isUsageVisible ? '▲' : '▼'}
       </h2>
       {isUsageVisible && (
-        <div>
-          <p>"愛の演説"は、以下のように編集できます。</p>
-          <ul>
+        <div style={{
+          backgroundColor: '#f9f9f9',
+          padding: '20px',
+          borderRadius: '10px',
+          boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
+          marginTop: '10px',
+        }}>
+          <p style={{ marginBottom: '10px' }}>
+            "愛の演説"は、以下のように編集できます。
+          </p>
+          <ul style={{ paddingLeft: '20px', marginBottom: '10px' }}>
             <li>テキストを直接編集</li>
             <li>上下ボタンで順番を変更</li>
             <li>削除ボタンで項目を削除</li>
           </ul>
-          <p>フォントやフォントサイズ、画像の高さを調整できます。ダウンロードボタンをクリックして画像を保存できます。</p>
-          <p>テキストをコピーするボタンも用意しています。</p>
-          <p>ページをリロードすると編集内容は復元されます。</p>
-          <p>オリジナルの"愛の演説"を作成してあなたの愛を表現しましょう！</p>
-          <p>※原文を参照させていただいていますが、自分の"愛の演説"を作成するためのエディターです。原文の内容をそのまま使用すること避けてください。</p>
+          <p style={{ marginBottom: '10px' }}>
+            フォントやフォントサイズ、画像の高さを調整できます。ダウンロードボタンをクリックして画像を保存できます。
+          </p>
+          <p style={{ marginBottom: '10px' }}>
+            テキストをコピーするボタンも用意しています。
+          </p>
+          <p style={{ marginBottom: '10px' }}>
+            ページをリロードすると編集内容は復元されます。
+          </p>
+          <p style={{ marginBottom: '10px' }}>
+            オリジナルの"愛の演説"を作成してあなたの愛を表現しましょう！
+          </p>
+          <p>
+            ※原文を参照させていただいていますが、自分の"愛の演説"を作成するためのエディターです。原文の内容をそのまま使用すること避けてください。
+          </p>
         </div>
       )}
+      <h1 style={{ marginTop: '20px' }}>"愛の演説"画像</h1>
       <canvas ref={canvasRef} style={{ border: '1px solid black', marginBottom: '20px', alignSelf: 'center' }}></canvas>
       <select
         value={selectedFont}
@@ -226,6 +271,7 @@ const EditLoveData = () => {
           </li>
         ))}
       </ul>
+      <h1>"愛の演説"テキストコピー</h1>
       <textarea
         value={data.join(' ')}
         readOnly
@@ -243,7 +289,7 @@ const EditLoveData = () => {
         <button
           onClick={() => {
             navigator.clipboard.writeText(data.join('\n'));
-            showToast('テキストをコピーしました');
+            showToast('各行を改行してコピーしました');
           }}
         >
           各行を改行してコピー
@@ -257,8 +303,9 @@ const EditLoveData = () => {
         >
           JSON配列としてコピー
         </button>
-        <button onClick={resetData}>リセット</button>
       </div>
+      <h2 style={{ marginTop: '20px' }}>データリセット</h2>
+      <button onClick={resetData}>リセット</button>
     </div>
   );
 };
