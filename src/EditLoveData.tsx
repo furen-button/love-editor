@@ -128,6 +128,26 @@ const EditLoveData = () => {
 
   return (
     <div className="edit-love-data" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <h1>"愛の演説"エディター</h1>
+      <div>
+        『君のことが大大大大大好きな100人の彼女』の"愛の演説"の編集をするエディターです。<br />
+        あらゆる大好きを詰め込んだ愛の演説を作成しましょう！<br />
+        参考: <a href="https://dic.pixiv.net/a/%E6%81%8B%E5%A4%AA%E9%83%8E%E6%B5%81%E6%84%9B%E3%81%AE%E5%91%8A%E7%99%BD" target="_blank">恋太郎流愛の告白 (おもすぎるあいのげんごか)とは【ピクシブ百科事典】</a>
+      </div>
+      <h2 style={{ marginTop: '20px' }}>使い方</h2>
+      <div>
+        <p>愛の演説は、以下のように編集できます。</p>
+        <ul>
+          <li>テキストを直接編集</li>
+          <li>上下ボタンで順番を変更</li>
+          <li>削除ボタンで項目を削除</li>
+        </ul>
+        <p>フォントやフォントサイズ、画像の高さを調整できます。ダウンロードボタンをクリックして画像を保存できます。</p>
+        <p>テキストをコピーするボタンも用意しています。</p>
+        <p>ページをリロードすると編集内容は復元されます。</p>
+        <p>愛の演説を作成してあなたの愛を表現しましょう！</p>
+        <p>※原文を参照させていただいていますが、自分の愛の演説を作成するためのエディターです。原文の内容をそのまま使用すること避けてください。</p>
+      </div>
       <select
         value={selectedFont}
         onChange={(e) => setSelectedFont(e.target.value)}
