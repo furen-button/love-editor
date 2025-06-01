@@ -7,6 +7,7 @@ const EditLoveData = () => {
   const [data, setData] = useState<string[]>(initialData);
   const [selectedFont, setSelectedFont] = useState('Arial');
   const [manualFontSize, setManualFontSize] = useState<number | null>(null);
+  const [manualCanvasHeight, setManualCanvasHeight] = useState<number | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const fetchAndSetData = async () => {
@@ -31,7 +32,7 @@ const EditLoveData = () => {
       const ctx = canvas.getContext('2d');
       if (ctx) {
         const canvasWidth = 800;
-        const canvasHeight = 418;
+        const canvasHeight = manualCanvasHeight || 418;
         canvas.width = canvasWidth;
         canvas.height = canvasHeight;
 
@@ -104,7 +105,7 @@ const EditLoveData = () => {
         }
       }
     }
-  }, [data, selectedFont, manualFontSize]);
+  }, [data, selectedFont, manualFontSize, manualCanvasHeight]);
 
   const handleEdit = (index: number, value: string) => {
     const newData = [...data];
@@ -165,6 +166,13 @@ const EditLoveData = () => {
         onChange={(e) => setManualFontSize(Number(e.target.value) || null)}
         placeholder="フォントサイズを入力"
         style={{ marginTop: '20px', marginBottom: '10px' }}
+      />
+      <input
+        type="number"
+        value={manualCanvasHeight || ''}
+        onChange={(e) => setManualCanvasHeight(Number(e.target.value) || null)}
+        placeholder="キャンバスの高さを入力"
+        style={{ marginTop: '10px', marginBottom: '10px' }}
       />
       <button
         onClick={() => {
