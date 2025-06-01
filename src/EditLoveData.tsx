@@ -6,6 +6,7 @@ const EditLoveData = () => {
   const initialData = savedData ? JSON.parse(savedData) : [];
   const [data, setData] = useState<string[]>(initialData);
   const [selectedFont, setSelectedFont] = useState('Arial');
+  const [manualFontSize, setManualFontSize] = useState<number | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const fetchAndSetData = async () => {
@@ -40,48 +41,49 @@ const EditLoveData = () => {
 
         const text = data.join(' ');
         // サイズ調整
-        let fontSize = 75;
+        let fontSize = manualFontSize || 75;
         const minFontSize = 8; // 最低フォントサイズを設定
         ctx.font = `${fontSize}px ${selectedFont}`;
         ctx.fillStyle = 'black'; // 文字色を黒色に設定
 
-        // フォントサイズを計算で求める
-        const calculateFontSize = () => {
-          let testFontSize = fontSize;
-          ctx.font = `${testFontSize}px ${selectedFont}`;
-          const textNum = text.length;
+        if (!manualFontSize) {
+          const calculateFontSize = () => {
+            let testFontSize = fontSize;
+            ctx.font = `${testFontSize}px ${selectedFont}`;
+            const textNum = text.length;
 
-          // メモ化された文字幅を保持
-          const memoizedCharacterWidth = (() => {
-            const cache = new Map<number, number>();
-            return (fontSize: number) => {
-              if (!cache.has(fontSize)) {
-                ctx.font = `${fontSize}px ${selectedFont}`;
-                const width = ctx.measureText('あ').width;
-                cache.set(fontSize, width);
+            const memoizedCharacterWidth = (() => {
+              const cache = new Map<number, number>();
+              return (fontSize: number) => {
+                if (!cache.has(fontSize)) {
+                  ctx.font = `${fontSize}px ${selectedFont}`;
+                  const width = ctx.measureText('あ').width;
+                  cache.set(fontSize, width);
+                }
+                return cache.get(fontSize) as number;
+              };
+            })();
+
+            while (testFontSize > minFontSize) {
+              const textWidth = memoizedCharacterWidth(testFontSize);
+              const textHeight = testFontSize;
+              const characterPerOneLine = Math.ceil(canvasWidth / textWidth);
+
+              // 必要な行数を計算
+              const lines = Math.ceil(textNum / characterPerOneLine);
+
+              if (lines * textHeight <= canvasHeight) {
+                break; // フォントサイズが適切な場合はループを抜ける
               }
-              return cache.get(fontSize) as number;
-            };
-          })();
-
-          while (testFontSize > minFontSize) {
-            const textWidth = memoizedCharacterWidth(testFontSize);
-            const textHeight = testFontSize;
-            const characterPerOneLine = Math.ceil(canvasWidth / textWidth);
-
-            // 必要な行数を計算
-            const lines = Math.ceil(textNum / characterPerOneLine);
-
-            if (lines * textHeight <= canvasHeight) {
-              break; // フォントサイズが適切な場合はループを抜ける
+              testFontSize -= 1; // フォントサイズを小さくする
             }
-            testFontSize -= 1; // フォントサイズを小さくする
-          }
 
-          return testFontSize;
-        };
+            return testFontSize;
+          };
 
-        fontSize = calculateFontSize();
+          fontSize = calculateFontSize();
+        }
+
         ctx.font = `${fontSize}px ${selectedFont}`;
 
         // テキスト描画
@@ -102,7 +104,7 @@ const EditLoveData = () => {
         }
       }
     }
-  }, [data, selectedFont]);
+  }, [data, selectedFont, manualFontSize]);
 
   const handleEdit = (index: number, value: string) => {
     const newData = [...data];
@@ -157,6 +159,13 @@ const EditLoveData = () => {
         ))}
       </select>
       <canvas ref={canvasRef} style={{ border: '1px solid black', marginBottom: '20px', alignSelf: 'center' }}></canvas>
+      <input
+        type="number"
+        value={manualFontSize || ''}
+        onChange={(e) => setManualFontSize(Number(e.target.value) || null)}
+        placeholder="フォントサイズを入力"
+        style={{ marginTop: '20px', marginBottom: '10px' }}
+      />
       <button
         onClick={() => {
           const canvas = canvasRef.current;
