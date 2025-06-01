@@ -131,6 +131,23 @@ const EditLoveData = () => {
     fetchAndSetData();
   };
 
+  const loadDataByFile = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.txt';
+
+    input.onchange = async (event) => {
+      const file = (event.target as HTMLInputElement).files?.[0];
+      if (file) {
+        const text = await file.text();
+        const lines = text.split('\n').map((line) => line.trim()).filter((line) => line);
+        setData(lines);
+      }
+    };
+
+    input.click();
+  };
+
   return (
     <div className="edit-love-data" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <h1 style={{
@@ -227,11 +244,11 @@ const EditLoveData = () => {
       >
         新しい愛を追加
       </button>
-      <h1>"愛の演説"テキストコピー</h1>
+      <h1 style={{ marginTop: '20px' }}>"愛の演説"テキストコピー</h1>
       <textarea
         value={data.join(' ')}
         readOnly
-        style={{ width: '100%', height: '100px', marginTop: '20px' }}
+        style={{ width: '100%', height: '100px', marginTop: '10px' }}
       ></textarea>
       <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
         <button
@@ -260,8 +277,15 @@ const EditLoveData = () => {
           JSON配列としてコピー
         </button>
       </div>
-      <h2 style={{ marginTop: '20px' }}>データリセット</h2>
-      <button onClick={resetData}>リセット</button>
+      <h1 style={{ marginTop: '20px' }}>データリセット</h1>
+      <div style={{ marginTop: '10px', marginBottom: '10px' }}>
+        <button onClick={resetData}>初期データへリセット</button>
+        <button onClick={() => {
+          localStorage.removeItem('loveData');
+          setData([]);
+        }} style={{ marginLeft: '10px' }}>データを0件にする</button>
+        <button onClick={loadDataByFile} style={{ marginLeft: '10px' }}>改行のテキストファイルから読み込む</button>
+      </div>
     </div>
   );
 };
