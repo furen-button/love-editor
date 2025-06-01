@@ -217,12 +217,20 @@ const EditLoveData = () => {
         </button>
         <button
           onClick={() => {
+            navigator.clipboard.writeText(data.join('\n'));
+            showToast('テキストをコピーしました');
+          }}
+        >
+          各行を改行してコピー
+        </button>
+        <button
+          onClick={() => {
             const jsonArray = JSON.stringify(data);
             navigator.clipboard.writeText(jsonArray);
             showToast('JSON配列をコピーしました');
           }}
         >
-          JSON配列化
+          JSON配列としてコピー
         </button>
         <button onClick={resetData}>リセット</button>
       </div>
