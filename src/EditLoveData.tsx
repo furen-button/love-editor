@@ -9,6 +9,7 @@ const EditLoveData = () => {
   const [data, setData] = useState<string[]>(initialData);
   const [selectedFont, setSelectedFont] = useState('Arial');
   const [manualFontSize, setManualFontSize] = useState<number | null>(null);
+  const [manualCanvasWidth, setManualCanvasWidth] = useState<number | null>(null);
   const [manualCanvasHeight, setManualCanvasHeight] = useState<number | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -33,7 +34,7 @@ const EditLoveData = () => {
     if (canvas) {
       const ctx = canvas.getContext('2d');
       if (ctx) {
-        const canvasWidth = 800;
+        const canvasWidth = manualCanvasWidth || 800;
         const canvasHeight = manualCanvasHeight || 418;
         canvas.width = canvasWidth;
         canvas.height = canvasHeight;
@@ -107,7 +108,7 @@ const EditLoveData = () => {
         }
       }
     }
-  }, [data, selectedFont, manualFontSize, manualCanvasHeight]);
+  }, [data, selectedFont, manualFontSize, manualCanvasWidth, manualCanvasHeight]);
 
   const handleEdit = (index: number, value: string) => {
     const newData = [...data];
@@ -193,37 +194,50 @@ const EditLoveData = () => {
             オリジナルの"愛の演説"を作成してあなたの愛を表現しましょう！
           </p>
           <p>
-            ※原文を参照させていただいていますが、自分の"愛の演説"を作成するためのエディターです。原文の内容をそのまま使用すること避けてください。
+            ※原文を参照させていただいていますが、オリジナルの"愛の演説"を作成するためのエディターです。原文の内容をそのまま使用すること避けてください。
           </p>
         </div>
       )}
       <h1 style={{ marginTop: '20px' }}>"愛の演説"画像</h1>
       <canvas ref={canvasRef} style={{ border: '1px solid black', marginBottom: '20px', alignSelf: 'center' }}></canvas>
-      <select
-        value={selectedFont}
-        onChange={(e) => setSelectedFont(e.target.value)}
-        style={{ marginBottom: '20px' }}
-      >
-        {['Arial', 'Noto Sans JP', 'Zen Maru Gothic', 'Zen Kaku Gothic'].map((font) => (
-          <option key={font} value={font}>
-            {font}
-          </option>
-        ))}
-      </select>
-      <input
-        type="number"
-        value={manualFontSize || ''}
-        onChange={(e) => setManualFontSize(Number(e.target.value) || null)}
-        placeholder="フォントサイズを入力"
-        style={{ marginTop: '20px', marginBottom: '10px' }}
-      />
-      <input
-        type="number"
-        value={manualCanvasHeight || ''}
-        onChange={(e) => setManualCanvasHeight(Number(e.target.value) || null)}
-        placeholder="キャンバスの高さを入力"
-        style={{ marginTop: '10px', marginBottom: '10px' }}
-      />
+      <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', alignItems: 'center' }}>
+        <label style={{ flex: '1', textAlign: 'right', marginRight: '5px' }}>フォント:</label>
+        <select
+          value={selectedFont}
+          onChange={(e) => setSelectedFont(e.target.value)}
+          style={{ flex: '2', padding: '5px' }}
+        >
+          {['Arial', 'Noto Sans JP', 'Zen Maru Gothic', 'Zen Kaku Gothic'].map((font) => (
+            <option key={font} value={font}>
+              {font}
+            </option>
+          ))}
+        </select>
+        <label style={{ flex: '1', textAlign: 'right', marginRight: '5px' }}>フォントサイズ:</label>
+        <input
+          type="number"
+          value={manualFontSize || ''}
+          onChange={(e) => setManualFontSize(Number(e.target.value) || null)}
+          placeholder="フォントサイズ"
+          style={{ flex: '2', padding: '5px' }}
+        />
+        <label style={{ flex: '1', textAlign: 'right', marginRight: '5px' }}>画像サイズ:</label>
+        <input
+          type="number"
+          value={manualCanvasWidth || ''}
+          onChange={(e) => setManualCanvasWidth(Number(e.target.value) || null)}
+          placeholder="幅"
+          style={{ flex: '2', padding: '5px' }}
+        />
+        <p>×</p>
+        <input
+          type="number"
+          value={manualCanvasHeight || ''}
+          onChange={(e) => setManualCanvasHeight(Number(e.target.value) || null)}
+          placeholder="高さ"
+          style={{ flex: '2', padding: '5px' }}
+        />
+      </div>
       <button
         onClick={() => {
           const canvas = canvasRef.current;
