@@ -196,7 +196,7 @@ const EditLoveData = () => {
           const canvas = canvasRef.current;
           if (canvas) {
             const link = document.createElement('a');
-            link.download = `love-message-${new Date().toISOString().slice(0, 10)}.png`;
+            link.download = `love-message-${new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' }).replace(/[/,: ]/g, '-')}.png`;
             link.href = canvas.toDataURL('image/png');
             link.click();
           }
