@@ -2,8 +2,14 @@ import '@testing-library/jest-dom';
 import { vi } from 'vitest';
 
 // canvas のモック
-HTMLCanvasElement.prototype.getContext = vi.fn((contextId) => {
-  if (contextId === '2d') {
+// getContextの型に合わせて各contextIdごとに適切なモックを返す
+// 型エラー回避のため any を使用
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(HTMLCanvasElement.prototype.getContext as any) = vi.fn(function (
+  contextId: "2d" | "bitmaprenderer" | "webgl" | "webgl2",
+  options?: any
+) {
+  if (contextId === "2d") {
     return {
       fillRect: vi.fn(),
       measureText: vi.fn(() => ({ width: 10 })),
@@ -21,7 +27,17 @@ HTMLCanvasElement.prototype.getContext = vi.fn((contextId) => {
       stroke: vi.fn(),
       strokeRect: vi.fn(),
       // 必要に応じて他のプロパティを追加
-    } as CanvasRenderingContext2D;
+    } as unknown as CanvasRenderingContext2D;
+  }
+  if (contextId === "bitmaprenderer") {
+    // transferFromImageBitmapを持つダミーオブジェクトを返す
+    return {
+      transferFromImageBitmap: vi.fn(),
+    } as unknown as ImageBitmapRenderingContext;
+  }
+  if (contextId === "webgl" || contextId === "webgl2") {
+    // WebGLRenderingContextのダミー
+    return {} as WebGLRenderingContext;
   }
   return null;
 });
